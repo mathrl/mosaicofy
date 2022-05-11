@@ -18,18 +18,21 @@ app.use("/api/tracks", tracksRoute)
 app.use("/api/user", userRoute)
 const port = process.env.PORT || 3001;
 
-if(process.env.NODE_ENV == 'production') {
-  app.use(express.static(__dirname + '/public/'));
-
-  app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'))
-}
 
 const baseEndpoint = "https://api.spotify.com/v1";
 const accountEndpoint = "https://accounts.spotify.com/authorize?";
 const client_id = "73ed4e8a503240048ce62c2d69391564";
-const redirect_uri = "http://localhost:3001/api/callback/";
+let redirect_uri = "http://localhost:3001/api/callback/";
+let appURL = "http://localhost:8080"
 const scope = "user-read-private user-top-read";
 let access_token;
+
+if(process.env.NODE_ENV == 'production') {
+  app.use(express.static(__dirname + '/public/'));
+  appURL = "https://hidden-wave-03827.herokuapp.com"
+  redirect_uri = appURL + "/api/callback/";
+  app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'))
+}
 
 ////
 let generateRandomString = function (length) {
