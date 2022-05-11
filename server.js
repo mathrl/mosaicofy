@@ -106,7 +106,7 @@ app.get("/api/callback", async (req, res) => {
   // we can also pass the token to the browser to make requests from there
   //res.clearCookie();
   res.cookie("token", access_token);
-  res.redirect("http://localhost:8080/app/");
+  res.redirect(appURL + "/app/");
 });
 
 app.listen(port, () => console.log("server running on port " + port));
