@@ -109,6 +109,10 @@ app.get("/api/callback", async (req, res) => {
   res.redirect(appURL + "/app/");
 });
 
-app.listen(port, () => console.log("server running on port " + port));
+if(process.env.NODE_ENV == 'production') {
+  app.use(express.static(__dirname + '/public/'));
+  app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'))
+}
 
-export default access_token;
+
+app.listen(port, () => console.log("server running on port " + port));
