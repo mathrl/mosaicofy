@@ -5,7 +5,6 @@ import qs from "qs";
 import tracksRoute from "./routes/tracks.js";
 import userRoute from "./routes/user.js";
 import cookieParser from "cookie-parser";
-import proxy from "html2canvas-proxy";
 
 const app = express();
 app.use(cors()).use(cookieParser());
