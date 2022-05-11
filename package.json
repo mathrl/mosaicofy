@@ -1,0 +1,24 @@
+{
+  "name": "mosaicofy",
+  "version": "1.0.0",
+  "description": "create a mosaic of spotify covers",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "type": "module",
+  "author": "Matheus Leite",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "html2canvas-proxy": "^1.0.1",
+    "qs": "^6.10.3"
+  },
+  "devDependencies": {
+    "colors": "^1.4.0",
+    "nodemon": "^2.0.16"
+  }
+}
