@@ -10,7 +10,6 @@ const app = express();
 app.use(cors()).use(cookieParser());
 app.use("/api/tracks", tracksRoute)
 app.use("/api/user", userRoute)
-app.use('/proxy', proxy());
 const port = process.env.PORT || 3001;
 
 if(process.env.NODE_ENV == 'production') {
