@@ -15,7 +15,8 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.18.1",
-    "qs": "^6.10.3"
+    "qs": "^6.10.3",
+    "colors": "^1.4.0"
   },
   "devDependencies": {
     "colors": "^1.4.0",
