@@ -2,9 +2,15 @@ import express from "express";
 import axios from "axios";
 import cors from "cors";
 import qs from "qs";
+
 import tracksRoute from "./routes/tracks.js";
 import userRoute from "./routes/user.js";
 import cookieParser from "cookie-parser";
+
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors()).use(cookieParser());
