@@ -22,15 +22,17 @@ const port = process.env.PORT || 3001;
 //const baseEndpoint = "https://api.spotify.com/v1";
 const accountEndpoint = "https://accounts.spotify.com/authorize?";
 const client_id = "73ed4e8a503240048ce62c2d69391564";
-let redirect_uri = "http://localhost:3001/api/callback/";
+let redirect_uri = `http://localhost:${port}/api/callback/`;
 let appURL = "http://localhost:8080";
-const scope = "user-read-private user-top-read";
+const scope = "user-top-read";
 let access_token;
 
 if (process.env.NODE_ENV === "production") {
   appURL = "https://mosaicofy.herokuapp.com";
   redirect_uri = appURL + "/api/callback/";
 }
+
+console.log(redirect_uri);
 
 ////
 let generateRandomString = function (length) {
