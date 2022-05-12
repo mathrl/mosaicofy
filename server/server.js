@@ -107,7 +107,7 @@ app.get("/api/callback", async (req, res) => {
   res.redirect(appURL + "/app/");
 });
 
-if(process.env.NODE_ENV === 'production') {
+if(process.env.NODE_ENV == 'production') {
   app.use(express.static(__dirname + "/public"));
   app.get(/.*/, (req, res) => res.sendFile(__dirname + "/public/index.html"));
 }
