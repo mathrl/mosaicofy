@@ -6,6 +6,7 @@ import qs from "qs";
 import tracksRoute from "./routes/tracks.js";
 import userRoute from "./routes/user.js";
 import cookieParser from "cookie-parser";
+require('dotenv').config()
 
 import path from "path";
 import { fileURLToPath } from "url";
@@ -68,7 +69,7 @@ app.get("/api/login", async (req, res) => {
 app.get("/api/callback", async (req, res) => {
   console.log("cb code " + req.query.code);
 
-  const client_secret = "708275168af04310a859f36943cea7fb";
+  const client_secret = process.env.CLIENT_SECRET;
   const code = req.query.code || null;
   //const state = req.query.state || null;
 
