@@ -1,7 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import AboutPopup from './components/AboutPopup.vue'
 
 const app = createApp(App)
 app.use(router)
+app.component('about-popup', AboutPopup);
 app.mount('#app')
