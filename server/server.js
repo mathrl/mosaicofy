@@ -6,7 +6,7 @@ import qs from "qs";
 import tracksRoute from "./routes/tracks.js";
 import userRoute from "./routes/user.js";
 import cookieParser from "cookie-parser";
-require('dotenv').config()
+import "dotenv/config";
 
 import path from "path";
 import { fileURLToPath } from "url";
@@ -15,21 +15,20 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors()).use(cookieParser());
-app.use("/api/tracks", tracksRoute)
-app.use("/api/user", userRoute)
+app.use("/api/tracks", tracksRoute);
+app.use("/api/user", userRoute);
 const port = process.env.PORT || 3001;
-
 
 //const baseEndpoint = "https://api.spotify.com/v1";
 const accountEndpoint = "https://accounts.spotify.com/authorize?";
 const client_id = "73ed4e8a503240048ce62c2d69391564";
 let redirect_uri = "http://localhost:3001/api/callback/";
-let appURL = "http://localhost:8080"
+let appURL = "http://localhost:8080";
 const scope = "user-read-private user-top-read";
 let access_token;
 
-if(process.env.NODE_ENV === 'production') {
-  appURL = "https://hidden-wave-03827.herokuapp.com"
+if (process.env.NODE_ENV === "production") {
+  appURL = "https://hidden-wave-03827.herokuapp.com";
   redirect_uri = appURL + "/api/callback/";
 }
 
@@ -69,6 +68,7 @@ app.get("/api/login", async (req, res) => {
 app.get("/api/callback", async (req, res) => {
   console.log("cb code " + req.query.code);
 
+  //const client_secret = "708275168af04310a859f36943cea7fb";
   const client_secret = process.env.CLIENT_SECRET;
   const code = req.query.code || null;
   //const state = req.query.state || null;
@@ -108,10 +108,9 @@ app.get("/api/callback", async (req, res) => {
   res.redirect(appURL + "/app/");
 });
 
-if(process.env.NODE_ENV == 'production') {
+if (process.env.NODE_ENV == "production") {
   app.use(express.static(__dirname + "/public"));
   app.get(/.*/, (req, res) => res.sendFile(__dirname + "/public/index.html"));
 }
-
 
 app.listen(port, () => console.log("server running on port " + port));
