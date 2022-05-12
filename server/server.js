@@ -28,7 +28,7 @@ const scope = "user-read-private user-top-read";
 let access_token;
 
 if (process.env.NODE_ENV === "production") {
-  appURL = "https://hidden-wave-03827.herokuapp.com";
+  appURL = "https://mosaicofy.herokuapp.com";
   redirect_uri = appURL + "/api/callback/";
 }
 
