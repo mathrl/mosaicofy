@@ -12,15 +12,14 @@
         >
         <br />
 
-        <a class="donation" @click="donation = 'pix: 51999639004'">PIX</a>
+        <a class="donation" @click="donation = '51999639004'">PIX</a>
         <a
           class="donation"
           href="https://www.paypal.com/donate/?hosted_button_id=V3MHLY7QKLS7U"
           target="_blank"
           >Paypal</a
         >
-        <span>{{ donation }}</span
-        ><br />
+        <span>{{ donation }}</span>
         I do not save any of your data.
       </p>
       <p id="paymentInfo"></p>
@@ -50,6 +49,16 @@ p {
   line-height: 1.5rem;
 }
 
+button {
+  padding: 5px;
+  font-size: 1.1rem;
+}
+
+a.donation {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 a.donation:not(:last-child) {
   margin-right: 8px;
 }
@@ -59,6 +68,10 @@ p#about-link {
   text-decoration: underline;
   cursor: pointer;
   margin-top: 5px;
+}
+
+span {
+  display: block;
 }
 
 div#about {
