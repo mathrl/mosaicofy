@@ -1,14 +1,22 @@
 <template>
-  <router-view/>
+  <router-view />
 </template>
 
 <style lang="scss">
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap");
+
+$black: #141414;
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: monospace;
+  font-family: "EB Garamond", serif;
   text-align: center;
+}
+
+body {
+    color: $black;
 }
 
 h1 {
@@ -23,7 +31,7 @@ button {
   border: none;
   padding: 13px;
   font-size: 1.2rem;
-  background-color: #141414;
+  background-color: $black;
   color: white;
   cursor: pointer;
 

@@ -16,7 +16,8 @@ router.get("/top/:range", async (req, res) => {
         Authorization: "Bearer " + token
       },
       params: {
-        'time_range': req.params.range
+        'time_range': req.params.range,
+        'limit': 25
       }
     });
     res.json(topArtists.data);

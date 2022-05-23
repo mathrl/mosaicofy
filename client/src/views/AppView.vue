@@ -1,34 +1,50 @@
 <template>
   <h1>🎧 Mosaicofy 🎧</h1>
   <div class="options">
-    <label for="range">Time Frame: </label>
-    <select name="range" id="range" @change="getTopTracks($event.target.value)">
-      <option value="short_term" selected>Last Month</option>
-      <option value="medium_term">Last 6 Months</option>
-      <option value="long_term">All Time</option>
-    </select>
-  </div>
-  <div class="options">
-    <label for="size">Size: </label>
-    <select id="size" @change="showTopTracksOnly = !showTopTracksOnly">
-      <option value="3x5" selected>3 x 5</option>
-      <option value="4x5">4 x 5</option>
-    </select>
-  </div>
-  <div class="options">
-    <label for="showSongs">Show Songs: </label>
-    <input
-      type="checkbox"
-      id="showSongs"
-      checked
-      @change="showSongs = !showSongs"
-    />
+    <div>
+      <label for="range">Time Frame: </label>
+      <select
+        name="range"
+        id="range"
+        @change="getTopTracks($event.target.value)"
+      >
+        <option value="short_term" selected>Last Month</option>
+        <option value="medium_term">Last 6 Months</option>
+        <option value="long_term">All Time</option>
+      </select>
+    </div>
+    <div>
+      <label for="showInfo">Show Info: </label>
+      <input
+        type="checkbox"
+        id="showInfo"
+        checked
+        @change="showInfo = !showInfo"
+      />
+    </div>
+    <div>
+      <label for="size">Size: </label>
+      <select id="size" @change="mosaicFormat = $event.target.value">
+        <option value="3" selected>3 x 5</option>
+        <option value="4">4 x 5</option>
+        <option value="5">5 x 5</option>
+      </select>
+    </div>
+    <div>
+      <label for="showSongs">Show Songs: </label>
+      <input
+        type="checkbox"
+        id="showSongs"
+        checked
+        @change="showSongs = !showSongs"
+      />
+    </div>
   </div>
 
-  <button class="options" @click="download">Download Image</button>
+  <button @click="download">Download Image</button>
 
   <div id="mosaic-container">
-    <div id="mosaic" :class="showTopTracksOnly ? '' : 'showAllTracks'">
+    <div id="mosaic" :style="{'grid-template-columns': `repeat(${mosaicFormat}, auto)`}">
       <div v-if="loading">
         <div class="lds-ring">
           <div></div>
@@ -56,6 +72,11 @@
           </p>
         </div>
       </div>
+
+      <div v-if="!loading && showInfo" class="mosaicInfo">
+        🎧 {{ name }}'s {{ timeRangeToText }} most listened tracks from mosaicofy.com
+        🎧
+      </div>
     </div>
   </div>
   <about-popup></about-popup>
@@ -69,20 +90,31 @@ import { saveAs } from "file-saver";
 export default {
   data() {
     return {
+      name: "",
       tracks: [],
-      showTopTracksOnly: true, // show top 15 only
+      mosaicFormat: "3",
       time_range: "short_term",
       showSongs: true,
+      showInfo: true,
       loading: true,
     };
   },
 
   computed: {
     tracksToDisplay() {
-      if (this.showTopTracksOnly) {
+      if (this.mosaicFormat == 3) {
         return this.tracks.slice(0, 15);
       }
+      if (this.mosaicFormat == 4) {
+        return this.tracks.slice(0, 20);
+      }
       return this.tracks;
+    },
+
+    timeRangeToText() {
+      if (this.time_range == "short_term") return "last month's";
+      if (this.time_range == "medium_term") return "last 6 months'";
+      return "all time";
     },
   },
 
@@ -106,7 +138,7 @@ export default {
     async getUserInfo() {
       try {
         const res = await axios.get("/api/user");
-        this.name = res.data.display_name;
+        this.name = res.data.display_name.split(" ")[0];
       } catch (err) {
         this.name = err;
       }
@@ -115,6 +147,7 @@ export default {
     async getTopTracks(time_range) {
       this.loading = true;
       this.tracks = [];
+      this.time_range = time_range;
       try {
         const res = await axios.get("/api/tracks/top/" + time_range);
         this.loading = false;
@@ -144,12 +177,18 @@ div#mosaic-container {
 div#mosaic {
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(3, auto);
   width: auto;
   margin: 0 auto;
+  margin-top: 10px;
+  text-align: center;
 }
-.showAllTracks {
-  grid-template-columns: repeat(4, auto) !important;
+div.mosaicInfo {
+  background-color: #141414f6;
+  color: antiquewhite;
+  grid-column-start: 1;
+  grid-column-end: -1;
+  text-align: center;
+  padding: 4px 0;
 }
 div.songInfo {
   width: 100%;
@@ -160,17 +199,18 @@ div.songInfo {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
 
-  color: white;
+  color: antiquewhite;
   font-weight: bold;
 }
 p#songName {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
 }
 
 p#artistName,
 p#duration {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 div.cover {
@@ -178,11 +218,12 @@ div.cover {
   height: 170px;
 }
 
-.options:first-child {
-  margin-top: 20px;
-}
-.options {
-  margin-bottom: 16px;
+div.options {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 10px;
 }
 
 /* loading */
