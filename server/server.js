@@ -24,7 +24,7 @@ const accountEndpoint = "https://accounts.spotify.com/authorize?";
 const client_id = "73ed4e8a503240048ce62c2d69391564";
 let redirect_uri = `http://localhost:${port}/api/callback/`;
 let appURL = "http://localhost:8080";
-const scope = "user-top-read";
+const scope = "user-top-read user-read-private user-read-email";
 let access_token;
 
 if (process.env.NODE_ENV === "production") {
