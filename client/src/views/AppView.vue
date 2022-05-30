@@ -73,10 +73,10 @@
         </div>
       </div>
 
-      <div v-if="!loading && showInfo" class="mosaicInfo">
+      <!-- <div v-if="!loading && showInfo" class="mosaicInfo">
         🎧 {{ name }}'s {{ timeRangeToText }} most listened tracks from mosaicofy.com
         🎧
-      </div>
+      </div> -->
     </div>
   </div>
   <!-- <about-popup></about-popup> -->
