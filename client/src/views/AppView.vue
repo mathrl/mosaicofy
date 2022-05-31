@@ -79,7 +79,7 @@
       </div> -->
     </div>
   </div>
-  <!-- <about-popup></about-popup> -->
+  <about-popup></about-popup>
 </template>
 
 <script>
