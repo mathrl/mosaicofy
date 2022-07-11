@@ -210,7 +210,7 @@ div.options {
   margin-bottom: 10px;
 }
 
-/* loading */
+/* loading  */
 .lds-ring {
   display: inline-block;
   position: relative;
