@@ -30,18 +30,8 @@
         <option value="5">5 x 5</option>
       </select>
     </div>
-    <div>
-      <label for="showSongs">Show Songs: </label>
-      <input
-        type="checkbox"
-        id="showSongs"
-        checked
-        @change="showSongs = !showSongs"
-      />
-    </div>
+    
   </div>
-
-  <button @click="download">Download Image</button>
 
   <div id="mosaic-container">
     <div id="mosaic" :style="{'grid-template-columns': `repeat(${mosaicFormat}, auto)`}">
@@ -61,31 +51,22 @@
           background: `url(${track.album.images[1].url}) no-repeat`,
           'background-size': 'contain',
         }"
-      >
-        <div v-if="showSongs" class="songInfo">
-          <p id="songName">{{ track.name }}</p>
-
-          <p id="artistName">{{ track.artists[0].name }}</p>
-
-          <p id="duration">
-            {{ millisToMinutesAndSeconds(track.duration_ms) }}
-          </p>
-        </div>
+      ><a :href="'https://open.spotify.com/album/' + track.album.id" target="_blank"></a>
+    
       </div>
 
       <div v-if="!loading && showInfo" class="mosaicInfo">
-        🎧 {{ name }}'s {{ timeRangeToText }} most listened tracks from mosaicofy.com
+        🎧 {{ name }}'s {{ timeRangeToText }} most listened from mosaicofy.com
         🎧
       </div>
     </div>
   </div>
-  <!-- <about-popup></about-popup> -->
+
+  <p id="spotify-copy">Data and artwork provided by <img src="../assets/spotify.png" alt=""></p>
 </template>
 
 <script>
 import axios from "axios";
-import html2canvas from "html2canvas";
-import { saveAs } from "file-saver";
 
 export default {
   data() {
@@ -124,17 +105,6 @@ export default {
   },
 
   methods: {
-    download() {
-      html2canvas(document.querySelector("#mosaic"), {
-        allowTaint: true,
-        useCORS: true,
-      }).then((canvas) => {
-        canvas.toBlob(function (blob) {
-          saveAs(blob, "mosaicofy.png");
-        });
-      });
-    },
-
     async getUserInfo() {
       try {
         const res = await axios.get("/api/user");
@@ -170,6 +140,14 @@ export default {
 </script>
 
 <style>
+p#spotify-copy {
+  text-align: center;
+}
+p#spotify-copy img {
+  height: 30px;
+  vertical-align: middle;
+}
+
 div#mosaic-container {
   display: flex;
   margin-bottom: 15px;
@@ -216,6 +194,12 @@ p#duration {
 div.cover {
   width: 170px;
   height: 170px;
+}
+
+div.cover a {
+  display:block;
+  width: 100%;
+  height: 100%;
 }
 
 div.options {
