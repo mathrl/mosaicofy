@@ -58,7 +58,7 @@
       <div v-if="!loading && showInfo" class="mosaicInfo">
         🎧 {{ name }}'s {{ timeRangeToText }} most listened from mosaicofy.com
         🎧
-      </div>
+      </div> -->
     </div>
   </div>
 
