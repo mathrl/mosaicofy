@@ -14,7 +14,7 @@
       </select>
     </div>
     <div>
-      <label for="showInfo">Show Info: </label>
+      <label for="showInfo">Show Credits: </label>
       <input
         type="checkbox"
         id="showInfo"
@@ -37,6 +37,7 @@
     <div id="mosaic" :style="{'grid-template-columns': `repeat(${mosaicFormat}, auto)`}">
       <div v-if="loading">
         <div class="lds-ring">
+          <!-- loading ring -->
           <div></div>
           <div></div>
           <div></div>
@@ -58,7 +59,7 @@
       <div v-if="!loading && showInfo" class="mosaicInfo">
         🎧 {{ name }}'s {{ timeRangeToText }} most listened from mosaicofy.com
         🎧
-      </div> -->
+      </div>
     </div>
   </div>
 
