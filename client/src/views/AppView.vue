@@ -143,6 +143,7 @@ export default {
 <style>
 p#spotify-copy {
   text-align: center;
+  padding-bottom: 30px;
 }
 p#spotify-copy img {
   height: 30px;
