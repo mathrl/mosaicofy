@@ -14,15 +14,6 @@
       </select>
     </div>
     <div>
-      <label for="showInfo">Show Info: </label>
-      <input
-        type="checkbox"
-        id="showInfo"
-        checked
-        @change="showInfo = !showInfo"
-      />
-    </div>
-    <div>
       <label for="size">Size: </label>
       <select id="size" @change="mosaicFormat = $event.target.value">
         <option value="3" selected>3 x 5</option>
@@ -31,10 +22,43 @@
       </select>
     </div>
     
+    <div>
+      <label for="showSongs">Show songs: </label>
+      <input
+        type="checkbox"
+        id="showInfo"
+        checked
+        @change="showSongs = !showSongs"
+      />
+    </div>
+    <div>
+      <label for="displayType">Display type: </label>
+      <select
+        name="displayType"
+        id="displayType"
+        @change="discrete = !discrete"
+        :disabled="!showSongs"
+      >
+        <option value="full" selected>Full</option>
+        <option value="discrete">Discrete</option>
+      </select>
+    </div>
+    <div>
+      <label for="showInfo">Show Info: </label>
+      <input
+        type="checkbox"
+        id="showInfo"
+        checked
+        @change="showInfo = !showInfo"
+      />
+    </div>
   </div>
 
   <div id="mosaic-container">
-    <div id="mosaic" :style="{'grid-template-columns': `repeat(${mosaicFormat}, auto)`}">
+    <div
+      id="mosaic"
+      :style="{ 'grid-template-columns': `repeat(${mosaicFormat}, auto)` }"
+    >
       <div v-if="loading">
         <div class="lds-ring">
           <div></div>
@@ -43,6 +67,7 @@
           <div></div>
         </div>
       </div>
+
       <div
         v-for="track in tracksToDisplay"
         :key="track.id"
@@ -51,18 +76,28 @@
           background: `url(${track.album.images[1].url}) no-repeat`,
           'background-size': 'contain',
         }"
-      ><a :href="'https://open.spotify.com/album/' + track.album.id" target="_blank"></a>
-    
+      >
+        <a
+          v-if="showSongs"
+          id="songInfo"
+          :class="{ discrete: discrete }"
+          :href="'https://open.spotify.com/album/' + track.album.id"
+          target="_blank"
+        >
+          <p id="songName" :class="{ discrete: discrete }">{{ track.name }}</p>
+          <p id="artistName" :class="{ discrete: discrete }">{{ track.artists[0].name }}</p>
+          <p v-if="!discrete" id="duration">
+            {{ millisToMinutesAndSeconds(track.duration_ms) }}
+          </p>
+        </a>
       </div>
 
       <div v-if="!loading && showInfo" class="mosaicInfo">
         🎧 {{ name }}'s {{ timeRangeToText }} most listened from mosaicofy.com
         🎧
-      </div> -->
+      </div>
     </div>
   </div>
-
-  <p id="spotify-copy">Data and artwork provided by <img src="../assets/spotify.png" alt=""></p>
 </template>
 
 <script>
@@ -74,10 +109,12 @@ export default {
       name: "",
       tracks: [],
       mosaicFormat: "3",
+      displayType: "full",
       time_range: "short_term",
       showSongs: true,
       showInfo: true,
       loading: true,
+      discrete: false,
     };
   },
 
@@ -122,7 +159,7 @@ export default {
         const res = await axios.get("/api/tracks/top/" + time_range);
         this.loading = false;
         this.tracks = res.data.items;
-        // console.log(this.tracks);
+        console.log(this.tracks);
       } catch (err) {
         this.tracks = err;
       }
@@ -139,13 +176,14 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 p#spotify-copy {
   text-align: center;
-}
-p#spotify-copy img {
-  height: 30px;
-  vertical-align: middle;
+
+  img {
+    height: 30px;
+    vertical-align: middle;
+  }
 }
 
 div#mosaic-container {
@@ -168,38 +206,47 @@ div.mosaicInfo {
   text-align: center;
   padding: 4px 0;
 }
-div.songInfo {
-  width: 100%;
-  height: 100%;
-  padding: 6px;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
 
-  color: antiquewhite;
-  font-weight: bold;
-}
-p#songName {
-  font-size: 1.15rem;
+a#songInfo {
+  p.discrete {
+    text-align: right;
+  }
+
+  p#songName {
+    font-size: 1.15rem;
+  }
+
+  p#artistName,
+  p#duration {
+    font-size: 0.8rem;
+  }
 }
 
-p#artistName,
-p#duration {
-  font-size: 0.8rem;
-}
 
 div.cover {
   width: 170px;
   height: 170px;
-}
 
-div.cover a {
-  display:block;
-  width: 100%;
-  height: 100%;
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    color: white;
+    text-decoration: none;
+  }
+
+  a.discrete {
+    align-items: flex-end;
+    justify-content: flex-end;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 5px;
+  }
 }
 
 div.options {
