@@ -54,6 +54,10 @@
     </div>
   </div>
 
+  <button v-if="!loading" id="download" @click="download">
+    Download Image
+  </button>
+
   <div id="mosaic-container">
     <div
       id="mosaic"
@@ -104,6 +108,8 @@
 
 <script>
 import axios from "axios";
+import html2canvas from 'html2canvas';
+import fileSaver from '../assets/FileSaver.js'
 
 export default {
   data() {
@@ -174,6 +180,23 @@ export default {
         ? minutes + 1 + ":00"
         : minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
     },
+
+    download() {
+      let _this = this;
+
+      html2canvas(document.querySelector("#mosaic"), {
+        allowTaint: true,
+        useCORS: true
+      }).then(canvas => {
+          canvas.toBlob(function(blob) {
+            let fileName = _this.name+'-mosaic';
+              fileSaver.saveAs(blob, fileName);
+          });
+          //document.body.appendChild(canvas)
+      });
+
+
+    }
   },
 };
 </script>
