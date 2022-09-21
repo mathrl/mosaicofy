@@ -6,7 +6,11 @@
       covers
     </h3>
     <a href="/api/login"><button>Login with Spotify</button></a>
+
+  <about-popup></about-popup>
+
   </div>
+
 </template>
 
 <style scoped>

@@ -26,7 +26,7 @@
       <label for="showSongs">Show songs: </label>
       <input
         type="checkbox"
-        id="showInfo"
+        id="showSongs"
         checked
         @change="showSongs = !showSongs"
       />
@@ -98,6 +98,8 @@
       </div>
     </div>
   </div>
+  <about-popup></about-popup>
+
 </template>
 
 <script>

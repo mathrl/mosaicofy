@@ -1,6 +1,5 @@
 <template>
   <router-view />
-  <about-popup></about-popup>
 </template>
 
 <style lang="scss">
