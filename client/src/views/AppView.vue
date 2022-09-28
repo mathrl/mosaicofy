@@ -14,6 +14,15 @@
       </select>
     </div>
     <div>
+      <label for="showSongs">Show songs: </label>
+      <input
+        type="checkbox"
+        id="showSongs"
+        checked
+        @change="showSongs = !showSongs"
+      />
+    </div>
+    <div>
       <label for="size">Size: </label>
       <select id="size" @change="mosaicFormat = $event.target.value">
         <option value="3" selected>3 x 5</option>
@@ -21,14 +30,15 @@
         <option value="5">5 x 5</option>
       </select>
     </div>
-    
+
+   
     <div>
-      <label for="showSongs">Show songs: </label>
+      <label for="repeatAlbums">Repeat albums: </label>
       <input
         type="checkbox"
-        id="showSongs"
+        id="repeatAlbums"
         checked
-        @change="showSongs = !showSongs"
+        @change="repeatAlbums = !repeatAlbums"
       />
     </div>
     <div>
@@ -44,7 +54,7 @@
       </select>
     </div>
     <div>
-      <label for="showInfo">Show Info: </label>
+      <label for="showInfo">Show credits: </label>
       <input
         type="checkbox"
         id="showInfo"
@@ -89,7 +99,9 @@
           target="_blank"
         >
           <p id="songName" :class="{ discrete: discrete }">{{ track.name }}</p>
-          <p id="artistName" :class="{ discrete: discrete }">{{ track.artists[0].name }}</p>
+          <p id="artistName" :class="{ discrete: discrete }">
+            {{ track.artists[0].name }}
+          </p>
           <p v-if="!discrete" id="duration">
             {{ millisToMinutesAndSeconds(track.duration_ms) }}
           </p>
@@ -103,13 +115,12 @@
     </div>
   </div>
   <about-popup></about-popup>
-
 </template>
 
 <script>
 import axios from "axios";
-import html2canvas from 'html2canvas';
-import fileSaver from '../assets/FileSaver.js'
+import html2canvas from "html2canvas";
+import fileSaver from "../assets/FileSaver.js";
 
 export default {
   data() {
@@ -117,25 +128,44 @@ export default {
       name: "",
       fullName: "",
       tracks: [],
+      uniqueTracks: [],
       mosaicFormat: "3",
       displayType: "full",
       time_range: "short_term",
       showSongs: true,
       showInfo: true,
       loading: true,
+      repeatAlbums: true,
       discrete: false,
     };
   },
 
   computed: {
     tracksToDisplay() {
+      let selectedTracks; // either all tracks or unique album ones
+      let tracks = this.tracks;
+      let uniqueTracks = this.uniqueTracks;
+
+      if (this.repeatAlbums) {
+        selectedTracks = tracks;
+      } else {
+        uniqueTracks = Array.from(
+          new Set(tracks.map((t) => t.album.id))
+        ).map((id) => {
+          return tracks.find((t) => t.album.id === id);
+        });
+
+        console.log(uniqueTracks);
+        selectedTracks = uniqueTracks;
+      }
+
       if (this.mosaicFormat == 3) {
-        return this.tracks.slice(0, 15);
+        return selectedTracks.slice(0, 15);
       }
       if (this.mosaicFormat == 4) {
-        return this.tracks.slice(0, 20);
+        return selectedTracks.slice(0, 20);
       }
-      return this.tracks;
+      return selectedTracks.slice(0, 25);
     },
 
     timeRangeToText() {
@@ -188,17 +218,15 @@ export default {
 
       html2canvas(document.querySelector("#mosaic"), {
         allowTaint: true,
-        useCORS: true
-      }).then(canvas => {
-          canvas.toBlob(function(blob) {
-            let fileName = _this.displayName+'-mosaic';
-              fileSaver.saveAs(blob, fileName);
-          });
-          //document.body.appendChild(canvas)
+        useCORS: true,
+      }).then((canvas) => {
+        canvas.toBlob(function (blob) {
+          let fileName = _this.displayName + "-mosaic";
+          fileSaver.saveAs(blob, fileName);
+        });
+        //document.body.appendChild(canvas)
       });
-
-
-    }
+    },
   },
 };
 </script>
@@ -248,7 +276,6 @@ a#songInfo {
     font-size: 0.8rem;
   }
 }
-
 
 div.cover {
   width: 170px;
