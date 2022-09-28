@@ -27,6 +27,9 @@
         The source code to this project is available
         <a target="_blank" href="https://github.com/mathrl/mosaicofy">here</a>.
       </p>
+      <p>
+        Special thanks to <a href="https://html2canvas.hertzen.com/" target="_blank">html2canvas</a> and <a href="https://github.com/eligrey/FileSaver.js/" target="_blank">FileSaver.js</a>
+      </p>
       <button @click="open = false">X</button>
     </div>
   </div>

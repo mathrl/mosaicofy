@@ -115,6 +115,7 @@ export default {
   data() {
     return {
       name: "",
+      fullName: "",
       tracks: [],
       mosaicFormat: "3",
       displayType: "full",
@@ -154,6 +155,7 @@ export default {
       try {
         const res = await axios.get("/api/user");
         this.name = res.data.display_name.split(" ")[0];
+        this.fullName = res.data.displayName;
       } catch (err) {
         this.name = err;
       }
@@ -189,7 +191,7 @@ export default {
         useCORS: true
       }).then(canvas => {
           canvas.toBlob(function(blob) {
-            let fileName = _this.name+'-mosaic';
+            let fileName = _this.displayName+'-mosaic';
               fileSaver.saveAs(blob, fileName);
           });
           //document.body.appendChild(canvas)
