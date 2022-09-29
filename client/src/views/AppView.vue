@@ -33,7 +33,7 @@
 
    
     <div>
-      <label for="repeatAlbums">Repeat albums: </label>
+      <label for="repeatAlbums">Show duplicate albums: </label>
       <input
         type="checkbox"
         id="repeatAlbums"
