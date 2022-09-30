@@ -13,6 +13,13 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+import db from "./config/dbConnect.js";
+import users from "./models/User.js";
+db.on("error", console.log.bind(console, "Erro de conexão"));
+db.once("open", () => {
+  console.log("Conexão com banco bem sucedida");
+})
+
 const app = express();
 app.use(cors()).use(cookieParser());
 app.use("/api/tracks", tracksRoute);
@@ -47,6 +54,12 @@ let generateRandomString = function (length) {
 };
 
 /////
+
+app.get("/users", async (req, res) => {
+  users.find((err, users) => {
+    res.json(users);
+  })
+});
 
 app.get("/api/login", async (req, res) => {
   let state = generateRandomString(16);
