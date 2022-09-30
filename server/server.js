@@ -59,15 +59,17 @@ let generateRandomString = function (length) {
 /////
 
 app.post("/api/loaduser", jsonParser, async (req, res) => {
-  let userInfo = new users(req.body);
+  if (process.env.NODE_ENV === "production") {
+      let userInfo = new users(req.body);
 
-  userInfo.save((err) => {
-    if(err) {
-      res.status(400).send({message: `${err.message} - falha ao cadastrar usuário`});
-    } else {
-      res.status(201).send(userInfo.toJSON());
-    }
-  });
+      userInfo.save((err) => {
+        if(err) {
+          res.status(400).send(`${err.message} - falha ao cadastrar usuário`);
+        } else {
+          res.status(201).send(userInfo.toJSON());
+        }
+    });
+  }
 });
 
 app.get("/api/login", async (req, res) => {
