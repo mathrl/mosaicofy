@@ -200,7 +200,7 @@ export default {
       try {
         const res = await axios.get("/api/user");
         this.name = res.data.display_name.split(" ")[0];
-        this.loadUserToDB(this.name, res.data.email, res.data.images[0].url, res.data.uri);
+        this.loadUserToDB(res.data.display_name, res.data.email, res.data.images[0].url, res.data.uri);
       } catch (err) {
         this.name = err;
       }
