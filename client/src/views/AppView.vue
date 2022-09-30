@@ -190,9 +190,9 @@ export default {
           username: username
       });
 
-        console.log('loaded user to DB');
+        //console.log('loaded user to DB');
       } catch (err) {
-        console.log('ERR loading user to DB '+err)
+        //console.log('ERR loading user to DB '+err)
       }
     },
 
