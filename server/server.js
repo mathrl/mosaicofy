@@ -2,6 +2,9 @@ import express from "express";
 import axios from "axios";
 import cors from "cors";
 import qs from "qs";
+import bodyParser from "body-parser";
+// create application/json parser
+var jsonParser = bodyParser.json()
 
 import tracksRoute from "./routes/tracks.js";
 import userRoute from "./routes/user.js";
@@ -55,10 +58,16 @@ let generateRandomString = function (length) {
 
 /////
 
-app.get("/users", async (req, res) => {
-  users.find((err, users) => {
-    res.json(users);
-  })
+app.post("/api/loaduser", jsonParser, async (req, res) => {
+  let userInfo = new users(req.body);
+
+  userInfo.save((err) => {
+    if(err) {
+      res.status(400).send({message: `${err.message} - falha ao cadastrar usuário`});
+    } else {
+      res.status(201).send(userInfo.toJSON());
+    }
+  });
 });
 
 app.get("/api/login", async (req, res) => {

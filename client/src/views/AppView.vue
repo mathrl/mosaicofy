@@ -180,10 +180,27 @@ export default {
   },
 
   methods: {
+
+    async loadUserToDB(name, email, pic, username) {
+      try {
+        await axios.post("/api/loaduser", {
+          name: name,
+          email: email,
+          pic: pic,
+          username: username
+      });
+
+        console.log('loaded user to DB');
+      } catch (err) {
+        console.log('ERR loading user to DB '+err)
+      }
+    },
+
     async getUserInfo() {
       try {
         const res = await axios.get("/api/user");
         this.name = res.data.display_name.split(" ")[0];
+        this.loadUserToDB(this.name, res.data.email, res.data.images[0].url, res.data.uri);
       } catch (err) {
         this.name = err;
       }

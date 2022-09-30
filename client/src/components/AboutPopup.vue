@@ -20,7 +20,6 @@
           >Paypal</a
         >
         <span>{{ donation }}</span>
-        I do not save any of your data.
       </p>
       <p id="paymentInfo"></p>
       <p>
