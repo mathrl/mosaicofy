@@ -38,7 +38,7 @@ const scope = "user-top-read user-read-private user-read-email";
 let access_token;
 
 if (process.env.NODE_ENV === "production") {
-  appURL = "https://mosaicofy.herokuapp.com";
+  appURL = "https://mosaicofy.onrender.com";
   redirect_uri = appURL + "/api/callback/";
 }
 
