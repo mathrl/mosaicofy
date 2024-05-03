@@ -38,7 +38,7 @@ const scope = "user-top-read user-read-private user-read-email";
 let access_token;
 
 if (process.env.NODE_ENV === "production") {
-  appURL = "https://mosaicofy.onrender.com";
+  appURL = "https://mosaicofy.vercel.app";
   redirect_uri = appURL + "/api/callback/";
 }
 
